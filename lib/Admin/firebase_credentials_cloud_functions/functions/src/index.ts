@@ -3,6 +3,7 @@ admin.initializeApp();
 
 export * from './modules/onCreateUser';
 export * from './modules/onCreatePassword';
+
 // // Start writing Firebase Functions
 // // https://firebase.google.com/docs/functions/typescript
 //

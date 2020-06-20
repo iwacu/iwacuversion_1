@@ -33,7 +33,7 @@ class _SignInState extends State<SignIn> {
               SizedBox(height: 20.0),
               //icon image
              
-              Text("Murakaza Neza", style: TextStyle(color: Colors.black
+              Text("Murakaza\nNeza", style: TextStyle(color: Colors.black
                     ,fontSize:40,
                     fontWeight: FontWeight.bold),
                     ),

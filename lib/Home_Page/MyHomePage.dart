@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:iwacu_version1/Admin/HomePageAdmin.dart';
 import 'package:iwacu_version1/Home_Page/Widget_details_page/cotton.dart';
 import 'package:iwacu_version1/Home_Page/Widget_details_page/polyster.dart';
+import 'package:iwacu_version1/Models/post.dart';
 import 'package:iwacu_version1/Models/user.dart';
 import 'package:iwacu_version1/Models/usersInformations.dart';
 import 'package:iwacu_version1/services/auth.dart';
@@ -19,11 +20,13 @@ class MyHomePage extends StatelessWidget {
     return LayoutBuilder(
       builder: (context, constraints) {
         return OrientationBuilder(builder: (context, orientation) {
-          SizeConfig().init(constraints, orientation);
+          SizeConfig().init(constraints,orientation);
           return MultiProvider(
             providers: [
               StreamProvider<UsersInformations>.value(
                   value: DatabaseService(uid: _user.uid).userInformations),
+              StreamProvider<List<Post>>.value(
+                  value: DatabaseService(uid: _user.uid).postDetail),    
             ],
             child: MaterialApp(
               debugShowCheckedModeBanner: false,
@@ -66,7 +69,17 @@ class _HomePageState extends State<HomePage>
         //title: Text('Ibitenge'),
         actions: <Widget>[
           new IconButton(icon: Icon(Icons.search), onPressed: null),
-          new IconButton(icon: Icon(Icons.shopping_cart), onPressed: null)
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: ClipRRect(
+                          borderRadius: BorderRadius.circular(6.4),
+                          child: Image.asset(
+                            'img/profile.png',
+                            width: 50,
+                            height: 50,
+                          ),
+                        ),
+          )
         ],
       ),
       drawer: new Drawer(
@@ -147,11 +160,12 @@ class _HomePageState extends State<HomePage>
             ),
            _admin? InkWell(
               onTap: () {
-                 Navigator.push(
+                                 Navigator.push(
     context,
     MaterialPageRoute(builder: (context) => HomePageAdmin()),
   );
-              },
+              
+          },
               child: ListTile(
                 title: TitleText(
                   text: 'Admin',
@@ -199,21 +213,40 @@ class _HomePageState extends State<HomePage>
         ),
       ),
       backgroundColor: const Color(0xFFE9E9E9),
-      body: Column(
-        children: <Widget>[
-          SizedBox(height: 30.0),
-          Expanded(
-            child: Container(
-              height: MediaQuery.of(context).size.height,
-              width: MediaQuery.of(context).size.width,
-              decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.vertical(
-                    top: Radius.circular(50),
-                  )),
-              child: Column(
-                children: <Widget>[
-                  TabBar(
+      body: Padding(
+        padding: const EdgeInsets.only(left:10),
+        child: Stack(
+          children: <Widget>[
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                //Title and subtitle
+                      SizedBox(height: SizeConfig.heightMultiplier * 3.6,),
+                      Text(
+                        'Gitenge',
+                        style: TextStyle(
+                          fontFamily: 'Libre',
+                          fontWeight: FontWeight.w500,
+                          fontSize: SizeConfig.widthMultiplier * 12.6,
+                          color: Color(0xffe57373),
+                          letterSpacing: 0.2
+                        ),
+                      ),
+                      SizedBox(height: SizeConfig.heightMultiplier,),
+                      Text(
+                        'Ahowasanga igitenge wifuza.',
+                        style: TextStyle(
+                          fontSize: SizeConfig.widthMultiplier * 3.9,
+                          color: Color(0xff757575),
+                          fontWeight: FontWeight.w500,
+                          letterSpacing: 0.2,
+                          wordSpacing: 0.4
+                        ),
+                      ),
+
+                SizedBox(height: SizeConfig.heightMultiplier),
+                //product Category
+                             TabBar(
                     
                       controller: tabController,
                       indicatorColor: const Color(0xffF7DFB9),
@@ -225,22 +258,40 @@ class _HomePageState extends State<HomePage>
                         Padding(
                           padding: const EdgeInsets.only(left:8,right:18),
                           child: Tab(
-                            child: TitleText(
-                              text: 'Cotton',
-                              fontSize: 17,
-                              fontWeight: FontWeight.w400,
-                            ),
+                            child: Container(
+                                  width: SizeConfig.widthMultiplier * 34,
+                                  child: Center(
+                                    child: Text(
+                                      'Cotton',
+                                      style: TextStyle(
+                                        color:Color(0xff616161),
+                                        fontSize:SizeConfig.textMultiplier * 3.4,
+                                        fontWeight: FontWeight.w500,
+                                        letterSpacing: 0.2,
+                                      ),
+                                    ),
+                                  ),
+                                ),
                           ),
                         ),
                         Tab(
-                          child: TitleText(
-                            text: 'Polyster',
-                            fontSize: 17,
-                            fontWeight: FontWeight.w400,
-                          ),
+                          child: Container(
+                                  width: SizeConfig.widthMultiplier * 34,
+                                  child: Center(
+                                    child: Text(
+                                      'Polyster',
+                                      style: TextStyle(
+                                        color:Color(0xff616161),
+                                        fontSize:SizeConfig.textMultiplier * 3.4,
+                                        fontWeight: FontWeight.w500,
+                                        letterSpacing: 0.2,
+                                      ),
+                                    ),
+                                  ),
+                                ),
                         ),
                       ]),
-                  Expanded(
+                            Expanded(
                     child: Container(
                       child: TabBarView(
                           controller: tabController,
@@ -250,11 +301,10 @@ class _HomePageState extends State<HomePage>
                           ]),
                     ),
                   )
-                ],
-              ),
+              ],
             ),
-          )
-        ],
+          ],
+        ),
       ),
     );
   }
